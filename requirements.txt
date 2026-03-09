@@ -1,0 +1,9 @@
+opencv-python
+numpy
+face-recognition
+flask
+flask-socketio
+mediapipe
+requests
+ultralytics
+torch
