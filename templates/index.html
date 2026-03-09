@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Live Exam Alerts</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" integrity="sha384-K6zK7FW0Fl36bb4cw1VxyZbXad3P4p7j+YVhHqpXH/7pEDNwX+u3kh8Y0w5b7o0m" crossorigin="anonymous"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { color: #333; }
+        .alert { border: 1px solid #f00; padding: 10px; margin: 10px 0; background: #fee; }
+        .alert img { max-width: 200px; display: block; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Live Exam Alerts</h1>
+    <div id="alerts"></div>
+
+    <script>
+        const socket = io();
+        const alertsDiv = document.getElementById('alerts');
+
+        socket.on('new_alert', data => {
+            const div = document.createElement('div');
+            div.className = 'alert';
+            div.innerHTML = `<strong>Seat:</strong> ${data.seat} <br>
+                             <strong>Reason:</strong> ${data.reason} <br>
+                             <strong>Score:</strong> ${data.score} <br>
+                             <strong>Time:</strong> ${new Date(data.timestamp*1000).toLocaleTimeString()}`;
+            if(data.thumbnail){
+                const img = document.createElement('img');
+                img.src = data.thumbnail;
+                div.appendChild(img);
+            }
+            alertsDiv.prepend(div);
+        });
+    </script>
+</body>
+</html>
